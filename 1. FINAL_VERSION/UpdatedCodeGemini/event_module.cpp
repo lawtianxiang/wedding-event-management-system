@@ -14,16 +14,16 @@ void handleEventRegistration(vector<Event>& events) {
         cout << "\n--- Event Registration Management ---\n";
         cout << "1. Register New Event\n";
         cout << "2. View All Events\n";
-        cout << "3. Update Event Information\n";
-        cout << "4. Delete an Event\n";
+        cout << "3. View Package Comparison\n";
+        cout << "4. Cancel an Event\n";
         cout << "5. Add On\n";
         cout << "6. Back to Main Menu\n";
 		choice = getValidatedChoice(1, 6);
         switch (choice) {
 		case 1: registerNewEvent(events); break;
 		case 2: viewAllEvents(events); break;
-		case 3: updateEventInfo(events); break;
-		case 4: deleteEvent(events); break;
+		case 3: displayPackageComparison(); break;
+		case 4: cancelEvent(events); break;
 		case 5: addOn(events); break;
 		case 6: break;
         }
@@ -98,7 +98,7 @@ void updateEventInfo(vector<Event>& events) {
 }
 
 // delete event by ID
-void deleteEvent(vector<Event>& events) {
+void cancelEvent(vector<Event>& events) {
     viewAllEvents(events);
     int id = getValidatedInteger("\nEnter Event ID to delete: ");
     for (auto it = events.begin(); it != events.end(); ++it) {
@@ -145,5 +145,32 @@ void addOn(vector<Event>& events) {
     int choice = getValidatedChoice(1, 2);
     if (choice == 1) {
         addTaskToEvent(*event);
+    }
+}
+
+void displayPackageComparison() {
+
+    const int NUM_PACKAGES = 3;
+    const int NUM_FEATURES = 4;
+    const string packages[NUM_PACKAGES][NUM_FEATURES] = {
+        // Package Name,      Day,        Photographer,             Catering
+        { "Bronze Package", "1 Day",     "Not Included",        "Standard Menu" },
+        { "Silver Package", "1 Day",     "Included (All Day)",  "Deluxe Menu"   },
+        { "Gold Package",   "1 Day",     "Included (All Day)",  "Premium Menu"  }
+    };
+
+    system("cls");
+    cout << "--- Wedding Package Comparison ---\n\n";
+
+    // Print the header
+    cout << left << setw(20) << "Package" << setw(15) << "Venue" << setw(25) << "Photographer" << setw(20) << "Catering" << endl;
+    cout << string(80, '-') << endl;
+
+    // Loop through the 2D array to print the details
+    for (int i = 0; i < NUM_PACKAGES; ++i) {
+        cout << left << setw(20) << packages[i][0]
+            << setw(15) << packages[i][1]
+            << setw(25) << packages[i][2]
+            << setw(20) << packages[i][3] << endl;
     }
 }
