@@ -8,31 +8,27 @@
 using namespace std;
 
 // main menu for event registration management
-
 void handleEventRegistration(vector<Event>& events) {
     int choice;
-    do {
-        system("cls");
-        cout << "--- Event Registration Management ---\n";
+	do {
+        cout << "\n--- Event Registration Management ---\n";
         cout << "1. Register New Event\n";
         cout << "2. View All Events\n";
-        cout << "3. View Package Comparison\n"; 
-        cout << "4. Update Event Information\n";           
-        cout << "5. Delete an Event\n";                    
-        cout << "6. Back to Main Menu\n";                  
-
-        choice = getValidatedChoice(1, 6); 
-
+        cout << "3. Update Event Information\n";
+        cout << "4. Delete an Event\n";
+        cout << "5. Add On\n";
+        cout << "6. Back to Main Menu\n";
+		choice = getValidatedChoice(1, 6);
         switch (choice) {
-        case 1: registerNewEvent(events); break;
-        case 2: viewAllEvents(events); break;
-        case 3: displayPackageComparison(); break;
-        case 4: updateEventInfo(events); break;
-        case 5: deleteEvent(events); break;
-        case 6: break;
+		case 1: registerNewEvent(events); break;
+		case 2: viewAllEvents(events); break;
+		case 3: updateEventInfo(events); break;
+		case 4: deleteEvent(events); break;
+		case 5: addOn(events); break;
+		case 6: break;
         }
-        if (choice != 6) pauseSystem(); 
-    } while (choice != 6);              
+        if (choice != 6) pauseSystem();
+    } while (choice != 6);
 }
 
 // register new event by entering details
@@ -76,6 +72,7 @@ void viewAllEvents(const vector<Event>& events) {
 
 // find event by ID to update information
 void updateEventInfo(vector<Event>& events) {
+    viewAllEvents(events);
     int id = getValidatedInteger("\nEnter Event ID to update: ");
     Event* eventToUpdate = findEventById(events, id);
     if (eventToUpdate == nullptr) {
@@ -102,6 +99,7 @@ void updateEventInfo(vector<Event>& events) {
 
 // delete event by ID
 void deleteEvent(vector<Event>& events) {
+    viewAllEvents(events);
     int id = getValidatedInteger("\nEnter Event ID to delete: ");
     for (auto it = events.begin(); it != events.end(); ++it) {
         if (it->eventId == id) {
@@ -124,6 +122,7 @@ void addTaskToEvent(Event& event) {
 
 //add on extra services or tasks to an existing event
 void addOn(vector<Event>& events) {
+    viewAllEvents(events);
     int id = getValidatedInteger("\nEnter Event ID to manage tasks: ");
     Event* event = findEventById(events, id);
     if (event == nullptr) {
@@ -146,32 +145,5 @@ void addOn(vector<Event>& events) {
     int choice = getValidatedChoice(1, 2);
     if (choice == 1) {
         addTaskToEvent(*event);
-    }
-}
-
-void displayPackageComparison() {
-   
-    const int NUM_PACKAGES = 3;
-    const int NUM_FEATURES = 4;
-    const string packages[NUM_PACKAGES][NUM_FEATURES] = {
-        // Package Name,   Venue Hours,   Photographer,      Catering
-        { "Bronze Package", "4 Hours",     "Not Included",    "Standard Menu" },
-        { "Silver Package", "6 Hours",     "Included (4 Hrs)","Deluxe Menu"   },
-        { "Gold Package",   "8 Hours",     "Included (All Day)","Premium Menu"  }
-    };
-
-    system("cls");
-    cout << "--- Wedding Package Comparison ---\n\n";
-
-    // Print the header
-    cout << left << setw(20) << "Package" << setw(15) << "Venue" << setw(25) << "Photographer" << setw(20) << "Catering" << endl;
-    cout << string(80, '-') << endl;
-
-    // Loop through the 2D array to print the details
-    for (int i = 0; i < NUM_PACKAGES; ++i) {
-        cout << left << setw(20) << packages[i][0]
-            << setw(15) << packages[i][1]
-            << setw(25) << packages[i][2]
-            << setw(20) << packages[i][3] << endl;
     }
 }
