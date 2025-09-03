@@ -17,17 +17,17 @@ void handlePayments(vector<Event>& events) {
         cout << "2. Manage a Specific Payment\n";
         cout << "3. Back to Main Menu\n";
         cout << "--------------------------------\n";
-		choice = getValidatedChoice(1, 3);
+		choice = getValidatedChoice(1, 3);		//validate user input between 1-3
 
         switch (choice) {
         case 1:
-			viewAllPaymentStatuses(events);
+			viewAllPaymentStatuses(events);	//view all payment status available
             break;
         case 2:
-			manageSinglePayment(events); 
+			manageSinglePayment(events); 	//make payment process
             break;
         case 3:
-			break;
+			break;	//return to the main menu of the system
         }
         if (choice != 3) {
             pauseSystem();
@@ -57,8 +57,9 @@ void viewAllPaymentStatuses(const vector<Event>& events) {
 
 // manage payment for a specific event
 void manageSinglePayment(vector<Event>& events) {
-    int id = getValidatedInteger("\nEnter Event ID to manage payment: ");
-    Event* event = findEventById(events, id);
+	viewAllPaymentStatuses(events);		//view all payment status available
+    int id = getValidatedInteger("\nEnter Event ID to manage payment: ");	//validation user input with only integer
+    Event* event = findEventById(events, id);	//find the event by entering event ID
     if (event == nullptr) {
         cout << "Event ID not found.\n";
         return;
@@ -68,36 +69,60 @@ void manageSinglePayment(vector<Event>& events) {
     cout << "Current Status: " << event->paymentDetails.status << endl;
     cout << "-------------------------------------------\n";
     cout << "1. Make Payment\n";
-    cout << "2. Cancel Payment\n";
+    cout << "2. Refund Payment\n";
     cout << "3. Generate Invoice\n";
     cout << "4. Back\n";
-    int choice = getValidatedChoice(1, 4);
-    if (choice == 1) {  // make payment
+    int choice = getValidatedChoice(1, 4);	//validate user input between 1-4
+    if (choice == 1) {  // make payment by selecting e-banking or e-wallet
+        if (event->paymentDetails.status == "Completed") {
+            cout << "\nThis payment has been completed.\n";
+            return;
+        }
         cout << "\nChoose Payment Method:\n";
         cout << "1. E-Banking\n";
         cout << "2. E-Wallet (TnG)\n";
-        int methodChoice = getValidatedChoice(1, 2);
+        int methodChoice = getValidatedChoice(1, 2);	//validate user input between 1-2
 
         string status;
         if (methodChoice == 1) {    // eBanking
-			status = getValidatedEBanking();
+			status = getValidatedEBanking();	//validate user input (bankAcc and password)
         }
         else {  // eWallet
-            status = getValidatedTnG();
+            status = getValidatedTnG();	//validate user input (phone number and PIN)
         }
         event->paymentDetails.status = status;
+        generateInvoice(*event);	//auto generate invoice after the payment process is completed
     }
-    else if (choice == 2) { //cancel payment
-        event->paymentDetails.status = "Cancelled";
-        cout << "(Success) Payment status updated to 'Cancelled'.\n";
+    else if (choice == 2) {  //refund payment
+        const double REFUND_RATE = 0.10;	//only refund 10% of the original amount
+        double originalAmount = event->paymentDetails.amount;
+        double refundAmount = originalAmount * REFUND_RATE;		//refund amount = 10% of the paid amount
+
+        cout << "\n--- Refund Process ---\n";
+        cout << "Original Payment: RM" << fixed << setprecision(2) << originalAmount << endl;
+        cout << "Refund Amount (10%): RM" << fixed << setprecision(2) << refundAmount << endl;
+
+        string method = event->paymentDetails.method;
+
+        if (method == "E-Banking") {
+            cout << "(Success) RM" << refundAmount << " has been refunded to your e-banking account.\n";
+        }
+        else if (method == "E-Wallet") {
+            cout << "(Success) RM" << refundAmount << " has been refunded to your e-wallet account.\n";
+        }
+        else {
+            cout << "(Success) RM" << refundAmount << " has been refunded.\n";
+        }
+        event->paymentDetails.status = "Refunded";
     }
-	else if (choice == 3) { //generate invoice
+	else if (choice == 3) { //generate invoice based on the event ID
         generateInvoice(*event);
     }
 }
 
 void generateInvoice(const Event& event) {
     stringstream invoice;
+    invoice << endl;
     invoice << "=========================================================\n";
     invoice << "                       INVOICE\n";
     invoice << "=========================================================\n\n";
@@ -105,8 +130,7 @@ void generateInvoice(const Event& event) {
     invoice << "Event ID:   " << event.eventId << "\n";
     invoice << "Date Issued: " << "Sunday, August 31, 2025" << "\n\n";
     invoice << "---------------------------------------------------------\n";
-    invoice << "Bill To:\n";
-    invoice << event.client.name << "\n";
+    invoice << "Bill To:\n" << event.client.name << "\n";
     invoice << "Contact: " << event.client.contactNumber << "\n\n";
     invoice << "Event Details:\n";
     invoice << "Date: " << event.eventDate << " at " << event.eventTime << "\n\n";
@@ -121,7 +145,7 @@ void generateInvoice(const Event& event) {
     invoice << "Thank you for your business!\n";
     invoice << "=========================================================\n";
 
-    cout << "\n--- Generated Invoice ---\n" << invoice.str();
+    cout << "\n Generating Invoice...\n" << invoice.str();
     string filename = "Invoice_Event_" + to_string(event.eventId) + ".txt";
     ofstream outFile(filename);
     outFile << invoice.str();
