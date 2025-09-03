@@ -1,6 +1,7 @@
 #include "guest_module.h"
 #include "utils.h"
 #include "validation.h"
+#include "event_module.h"
 #include <iostream>
 #include <vector>
 
@@ -8,6 +9,7 @@ using namespace std;
 
 // main menu for guest list management
 void handleGuestList(vector<Event>& events) {
+    viewAllEvents(events);
     int id = getValidatedInteger("\nEnter Event ID to manage the guest list: ");
     Event* event = findEventById(events, id);
     if (event == nullptr) {
@@ -35,6 +37,8 @@ void handleGuestList(vector<Event>& events) {
 // add a guest to the event's guest list
 void addGuest(Event& event) {
     string guestName = getValidatedName("\nEnter guest's full name to add: ");
+    string phoneNumber = getValidatedPhoneNumber("\nEnter guest's phone number: ");
+
     event.guestList.push_back(guestName);
     cout << "'" << guestName << "' has been added to the guest list.\n";
 }
@@ -54,6 +58,7 @@ void viewGuests(const Event& event) {
 
 // remove a guest from the event's guest list
 void removeGuest(Event& event) {
+    viewGuests(event);
     string guestName = getValidatedName("\nEnter the full name of the guest to remove: ");
 
     for (auto it = event.guestList.begin(); it != event.guestList.end(); ++it) {
