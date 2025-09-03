@@ -87,15 +87,30 @@ string getValidatedPhoneNumber(const string& prompt) {
     string input;
     while (true) {
         input = getNonEmptyString(prompt);
-        if (input.find_first_not_of("0123456789+- ") || (input.length() == 10 || input.length() == 11) == string::npos) {
-            break;  //validate length
-        }
-        else {
-            cout << "Invalid characters. Phone number can only contain 10 or 11 digits, +, -, and spaces.\n";
+
+        // Check for invalid characters
+        if (input.find_first_not_of("0123456789+- ") != string::npos) {
+            cout << "Invalid characters. Phone number can only contain digits, '+', '-', and spaces.\n";
+            continue;
         }
 
+        // Remove non-digit characters
+        string digitsOnly;
+        for (char ch : input) {
+            if (isdigit(ch)) {
+                digitsOnly += ch;
+            }
+        }
+
+        // Check length and prefix
+        if ((digitsOnly.length() == 10 || digitsOnly.length() == 11) &&
+            digitsOnly.substr(0, 2) == "01") {
+            return digitsOnly;  // Return cleaned number
+        }
+        else {
+            cout << "Invalid phone number! Must start with '01' and contain 10 or 11 digits.\n";
+        }
     }
-    return input;
 }
 
 // validation for time input in HH:MM format
@@ -164,7 +179,10 @@ string getValidatedTnG() {
     cout << "Enter your registered phone number (0123456789): ";
     getline(cin, phoneNo);
 
-    if (phoneNo.length() == 10 && all_of(phoneNo.begin(), phoneNo.end(), ::isdigit)) {
+    if ((phoneNo.length() == 10 || phoneNo.length() == 11) &&
+        phoneNo.substr(0, 2) == "01" &&
+        all_of(phoneNo.begin(), phoneNo.end(), ::isdigit)) {
+
         string pin;
         cout << "Enter your 6-digit PIN: ";
         getline(cin, pin);
