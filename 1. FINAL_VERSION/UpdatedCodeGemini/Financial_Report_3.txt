@@ -1,0 +1,10 @@
+--- Financial Report ---
+
+Inv. ID   Client                   Amount         Status         
+-----------------------------------------------------------------
+5101      john                     RM1200.00      Completed      
+5102      ha                       RM200.00       Pending        
+5103      john                     RM220.00       Pending        
+-----------------------------------------------------------------
+Total Revenue (Completed): RM1200.00
+Total Outstanding (Pending): RM420.00

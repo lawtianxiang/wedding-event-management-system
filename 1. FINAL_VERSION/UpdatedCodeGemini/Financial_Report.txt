@@ -1,0 +1,9 @@
+--- Financial Report ---
+
+Inv. ID   Client                   Amount         Status         
+-----------------------------------------------------------------
+5101      john                     $1200.00      Completed      
+5102      ha                       $200.00       Pending        
+-----------------------------------------------------------------
+Total Revenue (Completed): $1200.00
+Total Outstanding (Pending): $200.00

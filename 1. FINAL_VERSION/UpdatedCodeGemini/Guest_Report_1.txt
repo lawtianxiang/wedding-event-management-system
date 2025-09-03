@@ -1,0 +1,7 @@
+--- Client Management Report ---
+
+Event ID  Client                   Contact        Guests    
+------------------------------------------------------------
+101       john                     10             120       
+102       ha                       102            20        
+103       jh                       102            120       
