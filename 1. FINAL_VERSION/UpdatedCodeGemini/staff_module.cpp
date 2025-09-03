@@ -1,6 +1,7 @@
 #include "staff_module.h"
 #include "utils.h"
 #include "validation.h"
+#include "event_module.h"
 #include <iostream>
 #include <iomanip>
 
@@ -8,6 +9,7 @@ using namespace std;
 
 // Main menu for staff management
 void handleStaffManagement(vector<Event>& events) {
+    viewAllEvents(events);
     int id = getValidatedInteger("\nEnter Event ID to manage staff: ");
     Event* event = findEventById(events, id);
     if (event == nullptr) {
@@ -88,7 +90,7 @@ void modifyStaffDetails(Event& event) {
         cout << "No staff assigned to this event yet to modify.\n";
         return;
     }
-
+    viewEventStaff(event);
     string staffId = getNonEmptyString("\nEnter Staff ID to modify: ");
 
     // Find the staff member to modify
@@ -154,6 +156,7 @@ void modifyStaffDetails(Event& event) {
 
 // De-allocate a staff member from the event
 void deallocateStaffFromEvent(Event& event) {
+    viewEventStaff(event);
     string staffId = getNonEmptyString("\nEnter Staff ID to de-allocate: ");
     for (auto it = event.assignedStaff.begin(); it != event.assignedStaff.end(); ++it) {
         if (it->staffId == staffId) {
