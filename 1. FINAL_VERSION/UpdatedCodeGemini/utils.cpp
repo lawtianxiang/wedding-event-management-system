@@ -15,7 +15,7 @@ void displayIntroduction() {
 
 void displayMenu() {
    
-    cout << "======================== MENU =============================\n";
+    cout << "======================== MENU ========================\n";
     cout << "1. Event Registration \n";
     cout << "2. Payment \n";
     cout << "3. Staff Management\n";
