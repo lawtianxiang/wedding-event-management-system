@@ -4,6 +4,7 @@
 #include "event_module.h"
 #include <iostream>
 #include <vector>
+#include <iomanip>
 
 using namespace std;
 
@@ -36,12 +37,16 @@ void handleGuestList(vector<Event>& events) {
 
 // add a guest to the event's guest list
 void addGuest(Event& event) {
-    string guestName = getValidatedName("\nEnter guest's full name to add: ");
-    string phoneNumber = getValidatedPhoneNumber("\nEnter guest's phone number: ");
+    Client newGuest;
+    newGuest.name = getValidatedName("\nEnter guest's full name to add: ");
+    newGuest.contactNumber = getValidatedPhoneNumber("Enter guest's phone number: ");
+    newGuest.rating = getValidatedDouble("Enter guest's rating (0.0 - 5.0): ");
+    newGuest.feedback = getNonEmptyString("Enter guest's feedback: ");
 
-    event.guestList.push_back(guestName);
-    cout << "'" << guestName << "' has been added to the guest list.\n";
+    event.guestList.push_back(newGuest);
+    cout << "'" << newGuest.name << "' has been added to the guest list.\n";
 }
+
 
 // view all guests in the event's guest list
 void viewGuests(const Event& event) {
@@ -52,9 +57,12 @@ void viewGuests(const Event& event) {
     }
     int count = 1;
     for (const auto& guest : event.guestList) {
-        cout << count++ << ". " << guest << endl;
+        cout << count++ << ". " << guest.name << " | " << guest.contactNumber
+            << " | Rating: " << fixed << setprecision(1) << guest.rating
+            << " | Feedback: " << guest.feedback << endl;
     }
 }
+
 
 // remove a guest from the event's guest list
 void removeGuest(Event& event) {
@@ -62,7 +70,7 @@ void removeGuest(Event& event) {
     string guestName = getValidatedName("\nEnter the full name of the guest to remove: ");
 
     for (auto it = event.guestList.begin(); it != event.guestList.end(); ++it) {
-        if (*it == guestName) {
+        if (it->name == guestName) {
             event.guestList.erase(it);
             cout << "'" << guestName << "' has been removed from the guest list.\n";
             return;

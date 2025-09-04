@@ -18,6 +18,8 @@ struct AddOn {
 struct Client {  
     string name;  
     string contactNumber;  
+    double rating;
+    string feedback;
 };  
 
 struct Payment {  
@@ -35,17 +37,18 @@ struct Staff {
     string dutyPlace;  
 };  
 
-struct Event {  
-    int eventId = 0;  
-    Client client;  
-    string eventDate;  
-    string eventTime;  
-    int estimatedGuests = 0;  
-    string packageChoice;  
-    vector<Staff> assignedStaff;  
-    vector<string> guestList;  
-    Payment paymentDetails;  
-    vector<Task> tasks;  
-}; 
+struct Event {
+    int eventId;
+    Client client;
+    string eventDate;
+    string eventTime;
+    int estimatedGuests;
+    string packageChoice;
+    Payment paymentDetails;
+    vector<Client> guestList;
+    vector<Staff> assignedStaff;
+    vector<Task> tasks;
+};
+
 
 #endif

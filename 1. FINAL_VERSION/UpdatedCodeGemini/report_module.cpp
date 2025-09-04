@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <sstream>
+#include <set>
 using namespace std;
 
 const string REPORT_FOLDER = "reports/";
@@ -52,64 +53,31 @@ void handleReporting(vector<Event>& events) {
 
     do {
         cout << "\n--- Report Generation Menu ---\n";
-        cout << "1. Generate Guest Management Report\n";
-        cout << "2. Generate Financial Report\n";
-        cout << "3. Generate Event Task Report\n";
-        cout << "4. Generate Monthly Sales Analysis Report\n";
-        cout << "5. Generate Ad-hoc (Custom) Event Report\n";
-        cout << "6. Delete a Saved Report File\n";
-        cout << "7. Back to Main Menu\n";
-		choice = getValidatedChoice(1, 7); // get user choice with validation
+        cout << "1. Generate Financial Report\n";
+        cout << "2. Generate Monthly Sales Analysis Report\n";
+        cout << "3. Generate Ad-hoc (Custom) Event Report\n";
+        cout << "4. Delete a Saved Report File\n";
+        cout << "5. Back to Main Menu\n";
+		choice = getValidatedChoice(1, 5); // get user choice with validation
         switch (choice) {
             case 1: 
-				generateGuestReport(events); // generate guest management report
-                break;
-            case 2: 
 				generateFinancialReport(events); // generate financial report
                 break;
-            case 3: 
-				generateEventAddOnReport(events);  // generate event add-on service report
-                break;
-            case 4: 
+            case 2: 
 				generateAnalysisReport(events); // generate monthly sales analysis report
                 break;
-            case 5: 
+            case 3: 
 				generateAdHocReport(events); // generate ad-hoc custom report
                 break;
-            case 6: 
+            case 4: 
 				deleteReportFile();  // delete a saved report file
                 break;
-            case 7: 
+            case 5: 
                 break;
         }
-		if (choice != 7) // if not exiting
+		if (choice != 5) // if not exiting
 			pauseSystem(); // pause before showing menu again
-	} while (choice != 7); // loop until user chooses to exit
-}
-
-// generate guest management report
-void generateGuestReport(const vector<Event>& events) {
-
-	stringstream report; // use stringstream to build report content
-	report << "--- Client Management Report ---\n\n"; // report header
-
-    if (events.empty()) {
-		report << "No events to report on.\n"; // handle no events case
-    }
-    else {
-		report << left << setw(10) << "Event ID" << setw(25) << "Client" << setw(15) << "Contact" << setw(10) << "Guests" << endl; // table header
-		report << string(60, '-') << endl; // separator line
-        for (const auto& event : events) {
-			report << left << setw(10) << event.eventId << setw(25) << event.client.name << setw(15) << event.client.contactNumber << setw(10) << event.estimatedGuests << endl; // event details
-        }
-    }
-
-	cout << "\n" << report.str(); // display report on console
-	string filename = getUniqueFilename("Guest_Report"); // generate guest report
-	ofstream outFile(filename); // open file for writing
-	outFile << report.str(); // write report content to file
-	addReportToManifest(filename); // add filename to manifest
-	cout << "\n(Success) Report saved to " << filename << endl; // success message
+	} while (choice != 5); // loop until user chooses to exit
 }
 
 // generate financial report
@@ -144,46 +112,24 @@ void generateFinancialReport(const vector<Event>& events) {
 	cout << "\n(Success) Report saved to " << filename << endl; // success message
 }
 
-// generate event add-on service report
-void generateEventAddOnReport(const vector<Event>& events) {
-
-	stringstream report; // use stringstream to build report content
-	report << "--- Event Add On Report ---\n\n"; // report header
-
-    if (events.empty()) {
-		report << "No events to report on.\n"; // handle no events case
-    }
-    else {
-        for (const auto& event : events) {
-            report << "================================================\n";
-			report << "Event ID: " << event.eventId << " | Client: " << event.client.name << "\n"; // event header
-            report << "------------------------------------------------\n";
-            if (event.tasks.empty()) {
-				report << "No add on assigned for this event.\n"; // handle no tasks case
-            }
-            else {
-				report << left << setw(40) << "Add On Description" << setw(15) << "Status" << endl; // table header
-				report << string(55, '-') << endl; // separator line
-				for (const auto& task : event.tasks) { // list each task
-					report << left << setw(40) << task.description << setw(15) << task.status << endl; // task details
-                }
-            }
-			report << "\n"; // extra newline between events
-        }
-    }
-
-	cout << "\n" << report.str(); // display report on console
-	string filename = getUniqueFilename("Add_On_Report"); // generate add-on report
-	ofstream outFile(filename); // open file for writing
-	outFile << report.str(); // write report content to file
-	addReportToManifest(filename); // add filename to manifest
-	cout << "\n(Success) Report saved to " << filename << endl; // success message
-}
-
 // generate monthly sales analysis report
 void generateAnalysisReport(const vector<Event>& events) {
 
 	string month; // month input in YYYY-MM format
+    set<string> availableMonths;
+
+    for (const auto& event : events) {
+        if (event.eventDate.length() >= 7) {
+            string month = event.eventDate.substr(0, 7); // extract YYYY-MM
+            availableMonths.insert(month);
+        }
+    }
+
+    cout << "\n--- Available Months for Analysis ---\n";
+    for (const auto& m : availableMonths) {
+        cout << "- " << m << endl;
+    }
+
     while (true) {
 		month = getNonEmptyString("\nEnter month to analyze (e.g., YYYY-MM): "); // get month input
 		if (month.length() == 7 && month[4] == '-') { // basic format validation
@@ -230,67 +176,74 @@ void generateAnalysisReport(const vector<Event>& events) {
 	cout << "\n(Success) Report saved to " << filename << endl; // success message
 }
 
-// generate ad-hoc custom report for a specific event
+// generate ad - hoc custom event report
 void generateAdHocReport(const vector<Event>& events) {
+    cout << "\n--- Available Event IDs ---\n";
+    for (const auto& e : events) {
+        cout << "- Event ID: " << e.eventId << endl;
+    }
 
-	int id = getValidatedInteger("\nEnter Event ID for custom report: "); // get event ID input
-	const Event* event = nullptr; // pointer to the event to report on
+    int id = getValidatedInteger("\nEnter Event ID for guest feedback report: ");
+    const Event* event = nullptr;
 
     for (const auto& e : events) {
         if (e.eventId == id) {
-			event = &e; // found the event
+            event = &e;
             break;
         }
     }
 
-    if (event == nullptr) {
-		cout << "Event ID not found.\n"; // handle event not found case
+    if (!event) {
+        cout << "Event ID not found.\n";
         return;
     }
 
+    double minRating = getValidatedDouble("Enter minimum rating to filter guests (e.g., 4.0): ");
+
+    vector<Client> guestList;
+    if (event->client.rating >= minRating && !event->client.feedback.empty()) {
+        guestList.push_back(event->client);
+    }
+
+
     stringstream report;
-	report << "--- Ad-hoc Report for Event ID: " << id << " ---\n\n"; // report header
-	cout << "Select sections to include in the report:\n"; // prompt for sections to include
-	char c_client = getValidatedYesNo("Include Client Details? (y/n): "); // get yes/no input for client details
-	char c_guest = getValidatedYesNo("Include Guest List? (y/n): "); // get yes/no input for guest list
-	char c_staff = getValidatedYesNo("Include Staff Roster? (y/n): "); // get yes/no input for staff roster
-	char c_task = getValidatedYesNo("Include Task List? (y/n): "); // get yes/no input for task list
+    report << "=====================================================\n";
+    report << "     Guest Feedback Report - Event ID " << id << "\n";
+    report << "=====================================================\n\n";
+    report << "Filtered by minimum rating: " << fixed << setprecision(1) << minRating << "\n";
+    report << "Total matching guests: " << guestList.size() << "\n\n";
 
-    if (tolower(c_client) == 'y') {
-		report << "--- Client & Event Details ---\n"; // client details section
-		report << "Client Name: " << event->client.name << "\n"; // client name
-		report << "Contact: " << event->client.contactNumber << "\n"; // client contact
-		report << "Date: " << event->eventDate << " at " << event->eventTime << "\n"; // event date/time
-		report << "Package: " << event->packageChoice << "\n"; // event package
-		report << "Payment: " << event->paymentDetails.status << " ($" << event->paymentDetails.amount << ")\n\n"; // payment details
+    if (guestList.empty()) {
+        report << "No guests matched the criteria.\n";
+    }
+    else {
+        report << left << setw(25) << "Name"
+            << setw(15) << "Contact"
+            << setw(10) << "Rating"
+            << "Feedback\n";
+        report << string(80, '-') << "\n";
+
+        for (const auto& guest : guestList) {
+            report << left << setw(25) << guest.name
+                << setw(15) << guest.contactNumber
+                << setw(10) << fixed << setprecision(1) << guest.rating
+                << guest.feedback << "\n";
+        }
     }
 
-    if (tolower(c_guest) == 'y') {
-		report << "--- Guest List (" << event->guestList.size() << "/" << event->estimatedGuests << ") ---\n"; // guest list section
-		for (const auto& guest : event->guestList) report << "- " << guest << "\n"; // list each guest
-		report << "\n"; // extra newline after section
-    }
+    cout << "\n" << report.str();
 
-    if (tolower(c_staff) == 'y') {
-		report << "--- Staff Roster ---\n"; // staff roster section
-		for (const auto& staff : event->assignedStaff) report << "- " << staff.name << " (" << staff.role << ") at " << staff.dutyPlace << "\n"; // list each staff member
-		report << "\n"; // extra newline after section
+    string filename = "Guest_Feedback_Report_Event_" + to_string(id) + ".txt";
+    ofstream outFile(filename);
+    if (!outFile) {
+        cerr << "Error: Could not write to file " << filename << endl;
+        return;
     }
+    outFile << report.str();
+    outFile.close();
 
-    if (tolower(c_task) == 'y') {
-		report << "--- Task List ---\n"; // task list section
-		for (const auto& task : event->tasks) report << "- " << task.description << " [" << task.status << "]\n"; // list each task
-		report << "\n"; // extra newline after section
-    }
-
-	cout << "\n" << report.str(); // display report on console
-	string filename = "AdHoc_Report_Event_" + to_string(id) + ".txt"; // generate ad-hoc report
-	ofstream outFile(filename); // open file for writing
-	outFile << report.str(); // write report content to file
-	addReportToManifest(filename); // add filename to manifest
-	cout << "\n(Success) Report saved to " << filename << endl; // success message
+    cout << "\n(Success) Report saved to " << filename << endl;
 }
-
 
 // function to delete a saved report file
 void deleteReportFile() {
