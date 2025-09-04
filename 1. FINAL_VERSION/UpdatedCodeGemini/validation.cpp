@@ -108,7 +108,7 @@ string getValidatedPhoneNumber(const string& prompt) {
             return digitsOnly;  // Return cleaned number
         }
         else {
-            cout << "Invalid phone number! Must start with '01' and contain 10 or 11 digits.\n";
+            cout << "Invalid phone number! Must start with '01' and contain 10 or 11 digits (eg: 0123456789).\n";
         }
     }
 }
