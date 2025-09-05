@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -13,8 +14,10 @@ void saveDataToFile(const vector<Event>& events) {
         cerr << "Error: Could not open file for writing.\n";
         return;
     }
+
     for (const auto& event : events) {
-		outFile << event.eventId << "|"
+        // Write core event info
+        outFile << event.eventId << "|"
             << event.client.name << "|"
             << event.client.contactNumber << "|"
             << event.eventDate << "|"
@@ -24,20 +27,26 @@ void saveDataToFile(const vector<Event>& events) {
             << event.paymentDetails.invoiceId << "|"
             << event.paymentDetails.amount << "|"
             << event.paymentDetails.status << "|"
-            << event.client.rating << "|"
-            << event.client.feedback;
+            << event.client.rating << "|";
 
-        for (const auto& staff : event.assignedStaff) {
-            outFile << "||" << staff.staffId << "," << staff.name << "," << staff.role << "," << staff.attendance << "," << staff.dutyPlace;
-        }
+        string safeFeedback = event.client.feedback;
+        replace(safeFeedback.begin(), safeFeedback.end(), '|', '/');
+        replace(safeFeedback.begin(), safeFeedback.end(), ',', ';');
+        outFile << safeFeedback << "\n";
+
+        // Write each guest on a new line
         for (const auto& guest : event.guestList) {
-            outFile << "%%" << guest.name << "," << guest.contactNumber << "," << guest.rating << "," << guest.feedback;
+            string safeGuestFeedback = guest.feedback;
+            replace(safeGuestFeedback.begin(), safeGuestFeedback.end(), '|', '/');
+            replace(safeGuestFeedback.begin(), safeGuestFeedback.end(), ',', ';');
+
+            outFile << "%%" << guest.name << "," << guest.contactNumber << "," << guest.rating << "," << safeGuestFeedback << "\n";
         }
-        for (const auto& task : event.tasks) {
-            outFile << "##" << task.description << "," << task.status;
-        }
-        outFile << "\n";
+
+        // You can also write staff/tasks here if needed
     }
+
+    outFile.close();
 }
 
 // load events from a file
@@ -49,40 +58,55 @@ void loadDataFromFile(vector<Event>& events) {
     }
 
     string line;
+    Event tempEvent;
+    bool eventInProgress = false;
+
     while (getline(inFile, line)) {
-        stringstream ss(line);
-        string segment;
-        Event tempEvent;
-
-        // Core event fields
-        getline(ss, segment, '|'); tempEvent.eventId = stoi(segment);
-        getline(ss, tempEvent.client.name, '|');
-        getline(ss, tempEvent.client.contactNumber, '|');
-        getline(ss, tempEvent.eventDate, '|');
-        getline(ss, tempEvent.eventTime, '|');
-        getline(ss, segment, '|'); tempEvent.estimatedGuests = stoi(segment);
-        getline(ss, tempEvent.packageChoice, '|');
-        getline(ss, segment, '|'); tempEvent.paymentDetails.invoiceId = stoi(segment);
-        getline(ss, segment, '|'); tempEvent.paymentDetails.amount = stod(segment);
-        getline(ss, tempEvent.paymentDetails.status, '|');
-        getline(ss, segment, '|'); tempEvent.client.rating = stod(segment);
-        getline(ss, tempEvent.client.feedback, '|');
-
-        // Remaining data (staff/tasks) if any
-        string part;
-        while (getline(ss, part, '|')) {
-            if (!part.empty()) {
-                stringstream staffStream(part);
-                Staff tempStaff;
-                getline(staffStream, tempStaff.staffId, ',');
-                getline(staffStream, tempStaff.name, ',');
-                getline(staffStream, tempStaff.role, ',');
-                getline(staffStream, tempStaff.attendance, ',');
-                getline(staffStream, tempStaff.dutyPlace); // last field
-                tempEvent.assignedStaff.push_back(tempStaff);
+        if (line.rfind("%%", 0) == 0) {
+            // Guest line
+            stringstream guestStream(line.substr(2));
+            Client tempGuest;
+            getline(guestStream, tempGuest.name, ',');
+            getline(guestStream, tempGuest.contactNumber, ',');
+            string ratingStr;
+            getline(guestStream, ratingStr, ',');
+            try {
+                tempGuest.rating = stod(ratingStr);
             }
+            catch (...) {
+                tempGuest.rating = 0.0;
+            }
+            getline(guestStream, tempGuest.feedback, ',');
+            tempEvent.guestList.push_back(tempGuest);
         }
+        else {
+            // New event line
+            if (eventInProgress) {
+                events.push_back(tempEvent);
+                tempEvent = Event(); // reset for next event
+            }
 
+            stringstream ss(line);
+            string segment;
+            getline(ss, segment, '|'); tempEvent.eventId = stoi(segment);
+            getline(ss, tempEvent.client.name, '|');
+            getline(ss, tempEvent.client.contactNumber, '|');
+            getline(ss, tempEvent.eventDate, '|');
+            getline(ss, tempEvent.eventTime, '|');
+            getline(ss, segment, '|'); tempEvent.estimatedGuests = stoi(segment);
+            getline(ss, tempEvent.packageChoice, '|');
+            getline(ss, segment, '|'); tempEvent.paymentDetails.invoiceId = stoi(segment);
+            getline(ss, segment, '|'); tempEvent.paymentDetails.amount = stod(segment);
+            getline(ss, tempEvent.paymentDetails.status, '|');
+            getline(ss, segment, '|'); tempEvent.client.rating = stod(segment);
+            getline(ss, tempEvent.client.feedback, '|');
+
+            eventInProgress = true;
+        }
+    }
+
+    // Push last event
+    if (eventInProgress) {
         events.push_back(tempEvent);
     }
 

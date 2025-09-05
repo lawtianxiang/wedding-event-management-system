@@ -18,7 +18,7 @@ struct AddOn {
 struct Client {  
     string name;  
     string contactNumber;  
-    double rating;
+    double rating = 0.0;
     string feedback;
 };  
 

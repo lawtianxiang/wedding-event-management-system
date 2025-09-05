@@ -1,3 +1,5 @@
-101|john|10|2000-10-20|20:10|120|Gold|5101|1200|Completed|4.8|Amazing coordination and food!||S101,john,Chef,Present,JJJ
+101|john|10|2000-10-20|20:10|120|Gold|5101|1200|Completed|4.8|Amazing coordination and food!
 102|ha|102|2000-10-20|20:10|20|Silver|5102|200|Pending|4.5|Smooth registration and great ambiance.
 103|john|10|2000-20-10|10:10|120|Gold|5103|220|Pending|5|Best wedding I've attended this year.
+104|alex faan|0123456789|null|null|0|Guest|0|0|Pending|4.2|gud; very gud!
+101|ali ahkao|0129999999|null|null|0|Guest|0|0|Pending|4.7|gud gud gud!

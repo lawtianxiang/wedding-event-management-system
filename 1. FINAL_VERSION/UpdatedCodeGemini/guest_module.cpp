@@ -2,9 +2,12 @@
 #include "utils.h"
 #include "validation.h"
 #include "event_module.h"
+#include "file_handler.h"
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <algorithm>
+#include <fstream>
 
 using namespace std;
 
@@ -36,17 +39,40 @@ void handleGuestList(vector<Event>& events) {
 }
 
 // add a guest to the event's guest list
-void addGuest(Event& event) {
+void addGuest(const Event& targetEvent) {
     Client newGuest;
     newGuest.name = getValidatedName("\nEnter guest's full name to add: ");
     newGuest.contactNumber = getValidatedPhoneNumber("Enter guest's phone number: ");
     newGuest.rating = getValidatedDouble("Enter guest's rating (0.0 - 5.0): ");
     newGuest.feedback = getNonEmptyString("Enter guest's feedback: ");
 
-    event.guestList.push_back(newGuest);
-    cout << "'" << newGuest.name << "' has been added to the guest list.\n";
-}
+    // Sanitize feedback
+    replace(newGuest.feedback.begin(), newGuest.feedback.end(), '|', '/');
+    replace(newGuest.feedback.begin(), newGuest.feedback.end(), ',', ';');
 
+    // Append new guest row to events.txt
+    ofstream outFile("events.txt", ios::app); // append mode
+    if (!outFile) {
+        cerr << "Error: Could not open events.txt for appending.\n";
+        return;
+    }
+
+    outFile << targetEvent.eventId << "|"
+        << newGuest.name << "|"
+        << newGuest.contactNumber << "|"
+        << "null" << "|"
+        << "null" << "|"
+        << "0" << "|"
+        << "Guest" << "|"
+        << "0" << "|"
+        << "0" << "|"
+        << "Pending" << "|"
+        << newGuest.rating << "|"
+        << newGuest.feedback << "\n";
+
+    outFile.close();
+    cout << "'" << newGuest.name << "' has been added as a guest entry for Event ID " << targetEvent.eventId << ".\n";
+}
 
 // view all guests in the event's guest list
 void viewGuests(const Event& event) {

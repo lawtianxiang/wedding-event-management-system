@@ -177,35 +177,54 @@ void generateAnalysisReport(const vector<Event>& events) {
 }
 
 // generate ad - hoc custom event report
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <set>
+#include "utils.h" // for getValidatedInteger, getValidatedDouble
+using namespace std;
+
 void generateAdHocReport(const vector<Event>& events) {
     cout << "\n--- Available Event IDs ---\n";
+    set<int> uniqueIds;
     for (const auto& e : events) {
-        cout << "- Event ID: " << e.eventId << endl;
-    }
-
-    int id = getValidatedInteger("\nEnter Event ID for guest feedback report: ");
-    const Event* event = nullptr;
-
-    for (const auto& e : events) {
-        if (e.eventId == id) {
-            event = &e;
-            break;
+        if (uniqueIds.insert(e.eventId).second) {
+            cout << "- Event ID: " << e.eventId << endl;
         }
     }
 
-    if (!event) {
+    int id = getValidatedInteger("\nEnter Event ID for guest feedback report: ");
+
+    // Collect all matching events
+    vector<const Event*> matchingEvents;
+    for (const auto& e : events) {
+        if (e.eventId == id) {
+            matchingEvents.push_back(&e);
+        }
+    }
+
+    if (matchingEvents.empty()) {
         cout << "Event ID not found.\n";
         return;
     }
 
     double minRating = getValidatedDouble("Enter minimum rating to filter guests (e.g., 4.0): ");
 
+    // Collect all matching guests and clients
     vector<Client> guestList;
-    if (event->client.rating >= minRating && !event->client.feedback.empty()) {
-        guestList.push_back(event->client);
+    for (const auto* e : matchingEvents) {
+        if (e->client.rating >= minRating && !e->client.feedback.empty()) {
+            guestList.push_back(e->client);
+        }
+        for (const auto& guest : e->guestList) {
+            if (guest.rating >= minRating && !guest.feedback.empty()) {
+                guestList.push_back(guest);
+            }
+        }
     }
 
-
+    // Generate report
     stringstream report;
     report << "=====================================================\n";
     report << "     Guest Feedback Report - Event ID " << id << "\n";
@@ -233,6 +252,7 @@ void generateAdHocReport(const vector<Event>& events) {
 
     cout << "\n" << report.str();
 
+    // Save to file
     string filename = "Guest_Feedback_Report_Event_" + to_string(id) + ".txt";
     ofstream outFile(filename);
     if (!outFile) {
