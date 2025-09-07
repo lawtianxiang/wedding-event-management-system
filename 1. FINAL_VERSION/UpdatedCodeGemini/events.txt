@@ -1,3 +1,20 @@
-101|john|10|2000-10-20|20:10|120|Gold|5101|1200|Completed|4.8|Amazing coordination and food!
+101|john|0142345678|2025-08-01|20:10|120|Gold|5101|1200|Completed|0|
 %%Alex Faan,0122345678,4.2,Good!
-102|Alice Tan|0123456789|2025-10-15|18:00|100|Gold|5102|1500|Pending|0|
+%%Brenda Lee,0112233445,4.5,Loved the floral setup.
+%%Marcus Tan,0133344556,4.0,Smooth registration and friendly staff.
+102|Alice Tan|0123456789|2025-08-15|18:00|100|Gold|5102|1500|Pending|0|
+%%Nora Lim,0145566778,4.3,Great food and ambiance.
+%%Daniel Ong,0126677889,4.6,Very well organized.
+%%Siti Aisyah,0178899001,4.1,Enjoyed the music and lighting.
+103|Bryan Lee|0112233445|2025-08-20|17:30|80|Silver|5103|950|Completed|0|
+%%Chloe Tan,0129988776,4.7,Very smooth experience.
+%%Darren Ng,0111122334,4.3,Food was excellent.
+%%Emily Wong,0133344556,4.6,Loved the decorations!
+104|Farah Aziz|0198765432|2025-08-25|19:00|150|Gold|5104|1800|Pending|0|
+%%Hafiz Rahman,0172233445,4.2,Nice ambiance and friendly staff.
+%%Nadia Omar,0161122334,4.0,Registration was quick.
+%%Zul Ariffin,0183344556,4.5,Music and lighting were perfect!
+105|Kelvin Tan|0123456780|2025-08-28|16:00|60|Bronze|5105|700|Completed|0|
+%%Rachel Lim,0149988776,4.9,Best small wedding I’ve attended.
+%%Jason Teh,0131122334,4.6,Loved the MC and flow.
+%%Samantha Chua,0123344556,4.7,Very cozy and elegant.

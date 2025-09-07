@@ -2,25 +2,25 @@
                        INVOICE
 =========================================================
 
-Invoice ID: 5103
-Event ID:   103
+Invoice ID: 5105
+Event ID:   105
 Date Issued: Sunday, August 31, 2025
 
 ---------------------------------------------------------
 Bill To:
-Bryan Lee
-Contact: 0112233445
+Kelvin Tan
+Contact: 0123456780
 
 Event Details:
-Date: 2025-08-20 at 17:30
+Date: 2025-08-28 at 20:10
 
 ---------------------------------------------------------
 Description                             Amount         
 ---------------------------------------------------------
-Wedding Package - Silver                RM      950.00
+Wedding Package - Bronze                RM      700.00
 
 ---------------------------------------------------------
-TOTAL AMOUNT                            RM      950.00
+TOTAL AMOUNT                            RM      700.00
 ---------------------------------------------------------
 
 Payment Status: Completed

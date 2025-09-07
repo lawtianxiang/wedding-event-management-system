@@ -3,8 +3,6 @@
 =====================================================
 
 Filtered by minimum rating: 4.0
-Total matching guests: 1
+Total matching guests: 0
 
-Name                     Contact        Rating    Feedback
---------------------------------------------------------------------------------
-ha                       102            4.5       Smooth registration and great ambiance.
+No guests matched the criteria.

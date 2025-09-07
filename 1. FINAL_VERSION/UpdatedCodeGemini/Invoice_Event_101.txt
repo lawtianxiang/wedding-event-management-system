@@ -9,10 +9,10 @@ Date Issued: Sunday, August 31, 2025
 ---------------------------------------------------------
 Bill To:
 john
-Contact: 10
+Contact: 0142345678
 
 Event Details:
-Date: 2000-10-20 at 20:10
+Date: 2025-08-01 at 20:10
 
 ---------------------------------------------------------
 Description                             Amount         
