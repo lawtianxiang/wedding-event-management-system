@@ -32,6 +32,7 @@ void displayEndingMessage() {
 void pauseSystem() {
     cout << "\nPress Enter to continue...\n";
     cin.get();
+	system("cls"); // clear screen
 }
 
 

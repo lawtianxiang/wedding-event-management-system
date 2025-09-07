@@ -1,0 +1,11 @@
+=====================================================
+     Guest Feedback Report - Event ID 101
+=====================================================
+
+Filtered by minimum rating: 4.0
+Total matching guests: 2
+
+Name                     Contact        Rating    Feedback
+--------------------------------------------------------------------------------
+john                     10             4.8       Amazing coordination and food!
+Alex Faan                0122345678     4.2       Good!

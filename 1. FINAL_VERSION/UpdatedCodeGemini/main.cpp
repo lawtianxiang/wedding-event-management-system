@@ -23,6 +23,8 @@ int main() {
 		displayMenu();  // show main menu
 		choice = getValidatedChoice(1, 6);  // get user choice
 
+		system("cls"); // clear screen
+
         switch (choice) {
 		case 1: handleEventRegistration(allEvents); break;  // event management
 		case 2: handlePayments(allEvents); break;   // payment processing

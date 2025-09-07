@@ -29,7 +29,7 @@ void handleGuestList(vector<Event>& events) {
         cout << "4. Back to Main Menu\n";
         choice = getValidatedChoice(1, 4);
         switch (choice) {
-        case 1: addGuest(*event); break;
+        case 1: addGuest(*event, events); break;
         case 2: viewGuests(*event); break;
         case 3: removeGuest(*event); break;
         case 4: break;
@@ -39,7 +39,7 @@ void handleGuestList(vector<Event>& events) {
 }
 
 // add a guest to the event's guest list
-void addGuest(const Event& targetEvent) {
+void addGuest(Event& event, vector<Event>& events) {
     Client newGuest;
     newGuest.name = getValidatedName("\nEnter guest's full name to add: ");
     newGuest.contactNumber = getValidatedPhoneNumber("Enter guest's phone number: ");
@@ -50,44 +50,41 @@ void addGuest(const Event& targetEvent) {
     replace(newGuest.feedback.begin(), newGuest.feedback.end(), '|', '/');
     replace(newGuest.feedback.begin(), newGuest.feedback.end(), ',', ';');
 
-    // Append new guest row to events.txt
-    ofstream outFile("events.txt", ios::app); // append mode
-    if (!outFile) {
-        cerr << "Error: Could not open events.txt for appending.\n";
-        return;
-    }
+    event.guestList.push_back(newGuest);
+    saveDataToFile(events);
 
-    outFile << targetEvent.eventId << "|"
-        << newGuest.name << "|"
-        << newGuest.contactNumber << "|"
-        << "null" << "|"
-        << "null" << "|"
-        << "0" << "|"
-        << "Guest" << "|"
-        << "0" << "|"
-        << "0" << "|"
-        << "Pending" << "|"
-        << newGuest.rating << "|"
-        << newGuest.feedback << "\n";
-
-    outFile.close();
-    cout << "'" << newGuest.name << "' has been added as a guest entry for Event ID " << targetEvent.eventId << ".\n";
+    cout << "'" << newGuest.name << "' has been added as a guest entry for Event ID " << event.eventId << ".\n";
 }
 
 // view all guests in the event's guest list
 void viewGuests(const Event& event) {
-    cout << "\n--- Guest List for Event ID: " << event.eventId << " ---\n";
+    cout << "\n----------------------------------------------------\n";
+    cout << "Guest List for Event ID: " << event.eventId << "\n";
+    cout << "Client: " << event.client.name << "\n";
+    cout << "----------------------------------------------------\n\n";
+
     if (event.guestList.empty()) {
-        cout << "The guest list is currently empty.\n";
+        cout << "No guests have been added to this event.\n";
         return;
     }
+
+    cout << left << setw(5) << "No."
+        << setw(25) << "Guest Name"
+        << setw(15) << "Contact"
+        << setw(10) << "Rating"
+        << "Feedback\n";
+    cout << string(80, '-') << "\n";
+
     int count = 1;
     for (const auto& guest : event.guestList) {
-        cout << count++ << ". " << guest.name << " | " << guest.contactNumber
-            << " | Rating: " << fixed << setprecision(1) << guest.rating
-            << " | Feedback: " << guest.feedback << endl;
+        cout << left << setw(5) << count++
+            << setw(25) << guest.name
+            << setw(15) << guest.contactNumber
+            << setw(10) << fixed << setprecision(1) << guest.rating
+            << guest.feedback << "\n";
     }
 }
+
 
 
 // remove a guest from the event's guest list

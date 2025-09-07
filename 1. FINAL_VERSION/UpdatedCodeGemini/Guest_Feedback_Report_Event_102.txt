@@ -1,0 +1,10 @@
+=====================================================
+     Guest Feedback Report - Event ID 102
+=====================================================
+
+Filtered by minimum rating: 4.0
+Total matching guests: 1
+
+Name                     Contact        Rating    Feedback
+--------------------------------------------------------------------------------
+ha                       102            4.5       Smooth registration and great ambiance.

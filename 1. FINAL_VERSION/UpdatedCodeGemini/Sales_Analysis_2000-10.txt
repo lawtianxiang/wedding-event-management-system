@@ -1,0 +1,5 @@
+--- Top Sales Analysis for 2000-10 ---
+
+Rank Event ID  Client                   Sale Amount    
+-------------------------------------------------------
+1    101       john                     RM1200.00

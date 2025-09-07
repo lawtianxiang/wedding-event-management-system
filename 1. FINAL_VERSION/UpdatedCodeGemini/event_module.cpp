@@ -1,6 +1,7 @@
 #include "event_module.h"
 #include "utils.h"
 #include "validation.h"
+#include "file_handler.h"
 #include <iostream>
 #include <vector>
 #include <iomanip>
@@ -53,6 +54,7 @@ void registerNewEvent(vector<Event>& events) {
 	newEvent.paymentDetails.amount = getValidatedDouble("Enter Package Price: ");
     newEvent.paymentDetails.status = "Pending";
 	events.push_back(newEvent);
+    saveDataToFile(events);
     cout << "\n(Success) Event for " << newEvent.client.name << " registered successfully!\n";
 }
 

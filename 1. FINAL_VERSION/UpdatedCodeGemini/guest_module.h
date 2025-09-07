@@ -7,7 +7,7 @@
 using namespace std;
 
 void handleGuestList(vector<Event>& events);
-void addGuest(const Event& targetEvent);
+void addGuest(Event& event, vector<Event>& events);
 void viewGuests(const Event& event);
 void removeGuest(Event& event);
 

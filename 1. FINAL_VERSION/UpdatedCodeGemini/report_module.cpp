@@ -176,15 +176,6 @@ void generateAnalysisReport(const vector<Event>& events) {
 	cout << "\n(Success) Report saved to " << filename << endl; // success message
 }
 
-// generate ad - hoc custom event report
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <sstream>
-#include <set>
-#include "utils.h" // for getValidatedInteger, getValidatedDouble
-using namespace std;
-
 void generateAdHocReport(const vector<Event>& events) {
     cout << "\n--- Available Event IDs ---\n";
     set<int> uniqueIds;
