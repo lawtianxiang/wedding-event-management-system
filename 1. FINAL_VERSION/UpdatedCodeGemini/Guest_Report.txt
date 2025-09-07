@@ -1,5 +1,0 @@
---- Guest Management Report ---
-
-Event ID  Client                   Contact        Guests    
-------------------------------------------------------------
-101       q                        1              1         
