@@ -1,20 +1,55 @@
-101|john|0142345678|2025-08-01|20:10|120|Gold|5101|1200|Completed|0|
+101|John|0142345678|2025-08-01|20:10|120|Gold|5101|1200|Completed|0|
 %%Alex Faan,0122345678,4.2,Good!
 %%Brenda Lee,0112233445,4.5,Loved the floral setup.
 %%Marcus Tan,0133344556,4.0,Smooth registration and friendly staff.
+%%Ivy Chan,0145566778,4.3,Very helpful staff.
+%%Leonard Goh,0126677889,4.6,Great lighting and music.
+%%Megan Yeo,0178899001,4.1,Enjoyed the ceremony.
+%%Zack Lim,0163344556,4.4,Food was delicious.
+%%Tina Lau,0189988776,4.2,Seamless registration.
+%%Raymond Chia,0111122334,4.5,Excellent coordination.
+%%Felicia Tan,0132233445,4.7,Beautiful venue!
 102|Alice Tan|0123456789|2025-08-15|18:00|100|Gold|5102|1500|Pending|0|
 %%Nora Lim,0145566778,4.3,Great food and ambiance.
 %%Daniel Ong,0126677889,4.6,Very well organized.
 %%Siti Aisyah,0178899001,4.1,Enjoyed the music and lighting.
+%%Amirul Hakim,0162233445,4.4,Professional staff.
+%%Jasmine Lee,0183344556,4.2,Loved the decorations.
+%%Ken Tan,0119988776,4.5,Smooth experience.
+%%Liyana Omar,0131122334,4.3,Good coordination.
+%%Farid Iskandar,0123344556,4.0,Venue was clean and elegant.
+%%Michelle Wong,0142233445,4.6,Great MC and flow.
+%%Hannah Teo,0174455667,4.7,Memorable event!
 103|Bryan Lee|0112233445|2025-08-20|17:30|80|Silver|5103|950|Completed|0|
 %%Chloe Tan,0129988776,4.7,Very smooth experience.
 %%Darren Ng,0111122334,4.3,Food was excellent.
 %%Emily Wong,0133344556,4.6,Loved the decorations!
+%%Aaron Lim,0142233445,4.5,Great coordination.
+%%Vanessa Chua,0124455667,4.4,Very welcoming staff.
+%%Nicholas Teh,0169988776,4.2,Enjoyed the music.
+%%Grace Tan,0181122334,4.6,Beautiful setup.
+%%Ethan Goh,0135566778,4.3,Good lighting and sound.
+%%Stephanie Lau,0116677889,4.7,Loved the floral theme.
+%%Bryan Ong,0127788990,4.5,Smooth registration process.
 104|Farah Aziz|0198765432|2025-08-25|19:00|150|Gold|5104|1800|Pending|0|
 %%Hafiz Rahman,0172233445,4.2,Nice ambiance and friendly staff.
 %%Nadia Omar,0161122334,4.0,Registration was quick.
 %%Zul Ariffin,0183344556,4.5,Music and lighting were perfect!
+%%Syafiq Hassan,0149988776,4.3,Very well organized.
+%%Aina Zulkifli,0122233445,4.6,Beautiful decorations.
+%%Rizal Mahmud,0134455667,4.4,Helpful staff.
+%%Nabila Kamal,0115566778,4.2,Enjoyed the ceremony.
+%%Hakim Ismail,0176677889,4.1,Food was great.
+%%Sabrina Lee,0167788990,4.5,Loved the MC.
+%%Fahmi Roslan,0188899001,4.3,Great coordination.
 105|Kelvin Tan|0123456780|2025-08-28|16:00|60|Bronze|5105|700|Completed|0|
 %%Rachel Lim,0149988776,4.9,Best small wedding I’ve attended.
 %%Jason Teh,0131122334,4.6,Loved the MC and flow.
 %%Samantha Chua,0123344556,4.7,Very cozy and elegant.
+%%Benjamin Lau,0112233445,4.5,Great food and service.
+%%Clara Tan,0145566778,4.4,Intimate and well-run.
+%%Dylan Goh,0126677889,4.2,Enjoyed the music.
+%%Elaine Wong,0178899001,4.6,Beautiful setup.
+%%Marcus Lee,0163344556,4.3,Very smooth experience.
+%%Natalie Chua,0189988776,4.7,Loved the decorations.
+%%Terence Ng,0111122334,4.5,Excellent coordination.
